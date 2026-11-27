@@ -1,26 +1,120 @@
 # 无线充电硕士论文写作技能
 
-两项可独立调用的 Codex 技能，面向无线电能传输、电池充电和系统参数优化方向的中文工科论文。
+面向无线电能传输、电池充电和系统参数优化方向的中文工科论文。本仓库提供两项可独立调用的 Codex 技能，帮助你把模型、公式、图表和实验记录写成论文正文，并核查正文里的结论是否有足够的证据支撑。
 
-| 技能 | 用途 |
-| --- | --- |
-| [wpt-thesis-writing](skills/wpt-thesis-writing/SKILL.md) | 拟大纲、起草章节、润色和压缩正文，按需读取建模、优化和结果表达的参考材料。 |
-| [wpt-thesis-claim-review](skills/wpt-thesis-claim-review/SKILL.md) | 专项核查科研主张、数学与物理依据、比较协议和证据边界，给出分级意见和可替换表述。 |
+## 技能概览
 
-## 安装
+| 技能 | 主要用途 | 典型场景 | 交付内容 |
+| --- | --- | --- | --- |
+| [`wpt-thesis-writing`](skills/wpt-thesis-writing/SKILL.md) | 组织论证、起草章节、修订和压缩正文 | 拟学位论文大纲、解释补偿网络、写联合优化方法、分析仿真结果 | 大纲、章节初稿、修订稿，必要时另附待补材料 |
+| [`wpt-thesis-claim-review`](skills/wpt-thesis-claim-review/SKILL.md) | 核查科研主张及其证据边界 | 核对公式和量纲、检查对照是否可比、区分数值复核和样机实测 | 分级审读意见、证据位置、修改建议及可替换表述 |
 
-将仓库中的两个技能目录复制到论文项目根目录的 .agents/skills/。保留目录名、SKILL.md 和 references/。在论文项目中开启新 Codex 会话，再按技能名称调用。
+常见的联合用法是**先写正文，再单独审读关键结论**。已有初稿时，可以直接审读一个段落、一条公式或一句结论。只需要润色时，可以单独调用写作技能。
 
-## 使用示例
+## 安装与快速开始
 
-- $wpt-thesis-writing 请根据所给模型假设和公式起草二阶 RC 等效电路小节，保留电流方向、单位和适用边界。
-- $wpt-thesis-claim-review 请核查这段结论，逐项说明哪些主张得到表格支持，以及哪些仍需验证。
+下载或克隆本仓库，将 `skills/` 下的两个目录分别复制到**论文项目根目录**的 `.agents/skills/`。保留整个技能目录，含 `SKILL.md`、`references/`、`LICENSE` 和 `UPSTREAM.md`。
 
-两个技能也可以直接处理用户提供的素材。独立计算、仿真与 Office 交付可分别交给已安装的 scientific-toolkit-skill 和 office-academic-skill。
+```text
+论文项目/
+└── .agents/
+    └── skills/
+        ├── wpt-thesis-writing/
+        │   ├── SKILL.md
+        │   └── references/
+        └── wpt-thesis-claim-review/
+            ├── SKILL.md
+            └── references/
+```
 
-## 许可与来源
+在 Codex 中打开论文项目并新建会话，通过 `$wpt-thesis-writing` 或 `$wpt-thesis-claim-review` 调用。若会话找不到技能，先检查工作目录和 `SKILL.md` 的位置。
 
-两项技能的目录分别保留 MIT 许可证和上游版权声明。派生来源、固定提交和主要改动见各自的上游说明。
+**起草模型小节**
 
-- [写作技能来源](skills/wpt-thesis-writing/UPSTREAM.md) · [MIT 许可](skills/wpt-thesis-writing/LICENSE)
-- [审读技能来源](skills/wpt-thesis-claim-review/UPSTREAM.md) · [MIT 许可](skills/wpt-thesis-claim-review/LICENSE)
+```text
+$wpt-thesis-writing
+请根据所附电路图和公式，起草「二阶 RC 等效电路建模」小节。
+先说明充电电流方向和模型假设，再推导极化支路状态方程与端电压表达式。
+交代符号、单位和适用工况，将缺少的验证材料另列。
+```
+
+**压缩已有正文**
+
+```text
+$wpt-thesis-writing
+请将所附方法段压缩到 300 字左右。保留公式、变量定义、参数数值、
+终止条件与引文。先处理重复解释，保留理解和复现方法所需的步骤。
+```
+
+**核查一条研究结论**
+
+```text
+$wpt-thesis-claim-review
+请根据所附结果表和原评价协议，核查“本方法在所有工况下均优于对照”。
+逐条给出原句、问题等级、证据位置、修改建议和可替换表述。
+如需独立复算，请标明待验证及所需材料。
+```
+
+## 主要能力
+
+### 1. 论文写作 `wpt-thesis-writing`
+
+- **大纲与章节组织**。结合学校模板和已有材料，明确每章回答什么问题、依赖哪些证据、形成什么产出，以及后续章节怎样使用这些产出。
+- **理论建模与方法写作**。把补偿网络、等效电路、分段充电和联合优化写成连贯正文，交代端口、变量、符号、单位、假设、推导及复现所需的条件。
+- **结果分析**。围绕图表写清观察、定量差异、可能的物理解释和适用范围，保留影响结论的失败工况与不占优势的指标。
+- **修订与压缩**。消除重复、修正术语漂移和段落跳跃，保留原文的技术事实、公式、引文和限定条件。需要将修订稿写回文件时，请明确指定文件。
+
+### 2. 专项审读 `wpt-thesis-claim-review`
+
+完整审读覆盖**主张、数学、物理、比较、证据和叙事**六个方面，也可按请求只核查某个方面。典型问题包括符号定义跨章变化、仿真结果写成实测、对评价尺度或试验条件不同的算例直接排名，以及评价协议发生变化后仍沿用原比较结论。
+
+每个问题按**严重、重要、一般**分级，列出原句或位置、问题类型、证据位置、修改建议和可替换表述。来源冲突时，分别定位两端并说明影响。需要重新计算或验证的结论标为待验证，待结果返回后再更新正文。
+
+## 适用场景与所需材料
+
+| 你手上已有的材料 | 可以让技能做什么 | 建议补充 |
+| --- | --- | --- |
+| 学校论文模板、研究方向和阶段性材料 | 搭建论文大纲，安排理论、方法和验证章节 | 研究问题、各章预期产出、当前证据缺口 |
+| 电路图、推导公式或仿真模型 | 起草建模或方法小节，解释公式与工程意义 | 输入输出边界、符号单位、适用工况 |
+| 仿真图表、对照结果或实验记录 | 起草结果分析，说明趋势、差值、失败工况和适用范围 | 算例版本、对照条件、指标定义、有效样本数 |
+| 已有正文或导师批注 | 局部润色、缩减篇幅，或审读关键论断 | 目标篇幅、需保留的公式与引文、对应证据 |
+| 结论很强，但证据散落在不同版本 | 核查主张，将能成立的表述与待验证事项分别列出 | 待审原句、来源位置、原评价协议和验证状态 |
+
+如果项目已有研究索引，可以在请求里指定相关条目，例如用论证映射衔接前后章节，或用证据索引定位某个算例。没有索引时，直接提供本次任务所需的片段即可。普通润色以给定正文为起点，章节写作和审读按需要读取相关参考。
+
+## 一次完整的使用流程
+
+以撰写联合优化的结果段为例，先提供同一评价协议下的结果表、指标定义、对照条件和复核记录。用写作技能起草正文，再用审读技能核查结论和原始证据能否逐项对应。
+
+例如，**假设**联合方案的平均损耗低于对照，但有一个工况损耗更高。结果段应同时交代平均值的变化和该工况的表现，结论限定在本次比较的工况和模型范围内。如果材料只有仿真结果，样机性能需由相应的实测数据支撑。
+
+需要数值复核、重新仿真或作图时，可交给已安装的 `scientific-toolkit-skill`。需要 Word 或 PPT 交付时，可使用 `office-academic-skill`。两者都是可选的协作技能，由各自的安装来源提供。
+
+## 仓库结构与参考资料
+
+```text
+wpt-thesis-skills/
+├── README.md
+└── skills/
+    ├── wpt-thesis-writing/
+    │   ├── SKILL.md
+    │   ├── references/
+    │   ├── LICENSE
+    │   └── UPSTREAM.md
+    └── wpt-thesis-claim-review/
+        ├── SKILL.md
+        ├── references/
+        ├── LICENSE
+        └── UPSTREAM.md
+```
+
+写作参考覆盖学位论文组织、无线充电与电池建模、充电策略与联合优化、样机和图表表达、中文工科学术语言及公开学位论文参考卡。审读参考提供六个审查维度、问题分级和证据不足时的处理方法。各技能按任务读取相关资料。
+
+## 许可与致谢
+
+两个技能目录均保留 MIT 许可证和上游版权声明。固定提交、派生关系及主要改动见各自的 `UPSTREAM.md`。
+
+- 写作技能：[上游来源](skills/wpt-thesis-writing/UPSTREAM.md) · [MIT 许可证](skills/wpt-thesis-writing/LICENSE)
+- 审读技能：[上游来源](skills/wpt-thesis-claim-review/UPSTREAM.md) · [MIT 许可证](skills/wpt-thesis-claim-review/LICENSE)
+
+本 README 的技能概览与协作说明参考了 Academic Skills 的组织方式，能力说明、适用场景和目录展示参考了 Master Thesis Studio 的写法。[Academic Skills README](https://github.com/zLanqing/codex-claude-academic-skills/blob/main/README.md) · [Master Thesis Studio README](https://github.com/darksider-9/master-thesis-studio-skill/blob/main/README.md)
